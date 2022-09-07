@@ -1,16 +1,19 @@
 // https://memegen-link-examples-upleveled.netlify.app/
-
-const PORT = 8000;
-import express from 'express';
+import fs from 'fs';
+import Path, { dirname } from 'path';
+import http from 'http';
 import { load } from 'cheerio';
 import axios from 'axios';
+import { count } from 'console';
+import path from 'path';
 
-//start server with express
-const app = express();
-app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+const path = Path.resolve(__dirname, 'memes');
+const urlArray = [];
+let firstTenMemes = [];
+let counter = 1;
 
 // put the url into axios
-axios('https://www.internetingishard.com/html-and-css/advanced-positioning/')
+axios('https://memegen-link-examples-upleveled.netlify.app/')
   .then((response) => {
     // this is how you get the data:
     const html = response.data;
@@ -18,16 +21,40 @@ axios('https://www.internetingishard.com/html-and-css/advanced-positioning/')
 
     // this is how you can scrape stuff with cheerio:
     const getStuffWithCheerio = load(html);
-    // select the element id or class with cheerio
-    getStuffWithCheerio('.main-nav__name', html).each(function () {
-      const text = getStuffWithCheerio(this).text();
-      const urlIAmLookingFor = getStuffWithCheerio(this).attr('href');
-
-      console.log(text);
-      console.log(urlIAmLookingFor);
+    // select the element with cheerio
+    getStuffWithCheerio('img', html).each(function () {
+      // getting the src attribute with cheerio
+      const urlIAmLookingFor = getStuffWithCheerio(this).attr('src');
+      urlArray.push(urlIAmLookingFor);
     });
+
+    // getting the first ten memes
+    firstTenMemes = urlArray.slice(0, 10);
   })
   .catch((error) => console.log(error));
+
+async function download() {}
+
+// function downloadFile(imgUrl) {
+//   const file = fs.createWriteStream(`0${counter}.jpg`);
+//   console.log(file);
+//   http
+//     .get(imgUrl, function (response) {
+//       response.pipe(file);
+
+//       // after download completed close filestream
+//       file.on('finish', () => {
+//         file.close();
+//         console.log('Download Completed');
+//       });
+//     })
+//     .on('error', (err) => console.log(err));
+// }
+
+// firstTenMemes.forEach((meme) => {
+//   downloadFile(meme);
+//   counter++;
+// });
 
 // Connect to the URL and request / fetch the HTML contents of the website from the URL
 // Save this to a string
