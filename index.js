@@ -1,9 +1,9 @@
 // https://memegen-link-examples-upleveled.netlify.app/
 
 const PORT = 8000;
-const express = require('express');
-const cheerio = require('cheerio');
-const axios = require('axios');
+import express from 'express';
+import { load } from 'cheerio';
+import axios from 'axios';
 
 //start server with express
 const app = express();
@@ -17,7 +17,7 @@ axios('https://www.internetingishard.com/html-and-css/advanced-positioning/')
     // console.log(html);
 
     // this is how you can scrape stuff with cheerio:
-    const getStuffWithCheerio = cheerio.load(html);
+    const getStuffWithCheerio = load(html);
     // select the element id or class with cheerio
     getStuffWithCheerio('.main-nav__name', html).each(function () {
       const text = getStuffWithCheerio(this).text();
