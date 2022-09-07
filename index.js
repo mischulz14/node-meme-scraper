@@ -1,14 +1,25 @@
 // https://memegen-link-examples-upleveled.netlify.app/
-import fs from 'fs';
-import Path, { dirname } from 'path';
-import https from 'https';
-import { load } from 'cheerio';
+import fs from 'node:fs';
+import https from 'node:https';
 import axios from 'axios';
-import { type } from 'os';
+import { load } from 'cheerio';
 
 const urlArray = [];
 let firstTenMemes = [];
 let counter = 1;
+
+/**
+ * It takes a URL and a path, and downloads the image at the URL to the path
+ * @param url - The URL of the image you want to download.
+ * @param path - The path to the folder where you want to save the image.
+ */
+function saveImgToFolder(url, path) {
+  const localPath = fs.createWriteStream(path);
+
+  https.get(url, function (response) {
+    response.pipe(localPath);
+  });
+}
 
 // put the url into axios
 axios('https://memegen-link-examples-upleveled.netlify.app/')
@@ -28,17 +39,11 @@ axios('https://memegen-link-examples-upleveled.netlify.app/')
 
     // getting the first ten memes
     firstTenMemes = urlArray.slice(0, 10);
+
+    // downloading each meme, giving it the right name and put them into the right folder
     firstTenMemes.forEach((meme) => {
       saveImgToFolder(meme, `./memes/0${counter}.jpg`);
       counter++;
     });
   })
   .catch((error) => console.log(error));
-
-function saveImgToFolder(url, path) {
-  const localPath = fs.createWriteStream(path);
-
-  const request = https.get(url, function (response) {
-    response.pipe(localPath);
-  });
-}
