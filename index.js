@@ -3,8 +3,6 @@ import https from 'node:https';
 import axios from 'axios';
 import { load } from 'cheerio';
 
-// import download from 'download';
-
 const urlArray = [];
 let firstTenMemes = [];
 let counter = 1;
