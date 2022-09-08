@@ -1,4 +1,3 @@
-// https://memegen-link-examples-upleveled.netlify.app/
 import fs from 'node:fs';
 import https from 'node:https';
 import axios from 'axios';
