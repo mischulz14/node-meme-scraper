@@ -3,6 +3,8 @@ import https from 'node:https';
 import axios from 'axios';
 import { load } from 'cheerio';
 
+// import download from 'download';
+
 const urlArray = [];
 let firstTenMemes = [];
 let counter = 1;
@@ -17,7 +19,10 @@ function saveImgToFolder(url, path) {
 
   https.get(url, function (response) {
     response.pipe(localPath);
+    console.log('success');
   });
+
+  // download(url, path).then(console.log('success')); --> alternative!
 }
 
 // put the url into axios
