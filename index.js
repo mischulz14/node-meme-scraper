@@ -23,6 +23,16 @@ function saveImgToFolder(url, path) {
   // download(url, path).then(console.log('success')); --> alternative!
 }
 
+const dir = './memes';
+
+fs.mkdir(dir, (err) => {
+  if (fs.existsSync(dir)) return;
+  if (err) {
+    return console.error(err);
+  }
+  console.log('Directory created successfully!');
+});
+
 // put the url into axios
 axios('https://memegen-link-examples-upleveled.netlify.app/')
   .then((response) => {
