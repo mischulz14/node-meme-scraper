@@ -6,6 +6,8 @@ import { load } from 'cheerio';
 const urlArray = [];
 let firstTenMemes = [];
 let counter = 1;
+const dir = './memes';
+const customdir = './custom-memes';
 
 /**
  * It takes a URL and a path, and downloads the image at the URL to the path
@@ -22,8 +24,6 @@ function saveImgToFolder(url, path) {
 
   // download(url, path).then(console.log('success')); --> alternative!
 }
-
-const dir = './memes';
 
 fs.mkdir(dir, (err) => {
   if (fs.existsSync(dir)) return;
@@ -58,3 +58,18 @@ axios('https://memegen-link-examples-upleveled.netlify.app/')
     });
   })
   .catch((error) => console.log(error));
+
+if (process.argv[2] && process.argv[3] && process.argv[4]) {
+  fs.mkdir(customdir, (err) => {
+    if (fs.existsSync(customdir)) return;
+    if (err) {
+      return console.error(err);
+    }
+    console.log('Directory created successfully!');
+  });
+
+  saveImgToFolder(
+    `https://api.memegen.link/images/${process.argv[4]}/${process.argv[2]}/${process.argv[3]}.png`,
+    `./custom-memes/${process.argv[2]}${process.argv[3]}.png`,
+  );
+}
