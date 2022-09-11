@@ -38,7 +38,6 @@ axios('https://memegen-link-examples-upleveled.netlify.app/')
   .then((response) => {
     // this is how you get the data:
     const html = response.data;
-    // console.log(html);
 
     // this is how you can scrape stuff with cheerio:
     const getStuffWithCheerio = load(html);
